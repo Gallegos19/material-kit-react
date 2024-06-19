@@ -26,22 +26,24 @@ export interface UserPopoverProps {
 export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): React.JSX.Element {
   const { checkSession } = useUser();
 
+  const name = localStorage.getItem('name')
+  const surname = localStorage.getItem('surname')
+  const email = localStorage.getItem('email')
+
   const router = useRouter();
 
   const handleSignOut = React.useCallback(async (): Promise<void> => {
     try {
-      const { error } = await authClient.signOut();
-
-      if (error) {
-        logger.error('Sign out error', error);
-        return;
-      }
-
+  
       // Refresh the auth state
       await checkSession?.();
-
+      
+      localStorage.removeItem('name')
+      localStorage.removeItem('surname')
+      localStorage.removeItem('email')
       // UserProvider, for this case, will not refresh the router and we need to do it manually
-      router.refresh();
+      router.push('/auth/sign-in')
+
       // After refresh, AuthGuard will handle the redirect
     } catch (err) {
       logger.error('Sign out error', err);
@@ -57,30 +59,30 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
       slotProps={{ paper: { sx: { width: '240px' } } }}
     >
       <Box sx={{ p: '16px 20px ' }}>
-        <Typography variant="subtitle1">Sofia Rivers</Typography>
+        <Typography variant="subtitle1">{name} {surname}</Typography>
         <Typography color="text.secondary" variant="body2">
-          sofia.rivers@devias.io
+          {email}
         </Typography>
       </Box>
       <Divider />
       <MenuList disablePadding sx={{ p: '8px', '& .MuiMenuItem-root': { borderRadius: 1 } }}>
-        <MenuItem component={RouterLink} href={paths.dashboard.settings} onClick={onClose}>
+        {/* <MenuItem component={RouterLink} href={paths.dashboard.settings} onClick={onClose}>
           <ListItemIcon>
             <GearSixIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
           Settings
-        </MenuItem>
-        <MenuItem component={RouterLink} href={paths.dashboard.account} onClick={onClose}>
+        </MenuItem> */}
+        {/* <MenuItem component={RouterLink} href={paths.dashboard.account} onClick={onClose}>
           <ListItemIcon>
             <UserIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Profile
-        </MenuItem>
+          Perfil
+        </MenuItem> */}
         <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
             <SignOutIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Sign out
+          Cerrar Sesión
         </MenuItem>
       </MenuList>
     </Popover>

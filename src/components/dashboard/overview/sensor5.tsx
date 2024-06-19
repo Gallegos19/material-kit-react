@@ -5,23 +5,23 @@ import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import type { SxProps } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { Receipt as ReceiptIcon } from '@phosphor-icons/react/dist/ssr/Receipt';
+//import { Receipt as ReceiptIcon } from '@phosphor-icons/react/dist/ssr/Receipt';
 import {DropHalfBottom} from "@phosphor-icons/react/dist/ssr/DropHalfBottom"
 
 
-export interface TotalProfitProps {
+export interface Sensor5Props {
   sx?: SxProps;
   value: number;
 }
 
-export function TotalProfit({ value, sx }: TotalProfitProps): React.JSX.Element {
+export function Sensor5({ value, sx }: Sensor5Props): React.JSX.Element {
   return (
     <Card sx={sx}>
       <CardContent>
         <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
           <Stack spacing={1}>
             <Typography color="text.secondary" variant="overline">
-              Sensor 4
+              Sensor 5
             </Typography>
             <Typography variant="h4">{value}%</Typography>
           </Stack>
