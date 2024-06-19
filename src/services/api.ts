@@ -3,7 +3,7 @@ import { paths } from '@/paths';
 
 const url = paths.api;
 
-interface User {
+ export interface User {
   id: string;
   name: string;
   surname: string;

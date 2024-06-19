@@ -5,21 +5,20 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-import dayjs from 'dayjs';
+
 import { useRouter } from 'next/navigation';
-import { paths } from '@/paths';
 import { SignUpForm } from '@/components/auth/sign-up-form';
 
-import { config } from '@/config';
 // import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
 import { CustomersTable } from '@/components/dashboard/customer/customers-table';
 import type { Customer } from '@/components/dashboard/customer/customers-table';
 import { metadata } from './metadata';
 import { getUsers, createUser } from '@/services/api';
+import { User } from '@/services/api';
 
 export default function Page(): React.JSX.Element {
   const [showSignUpForm, setShowSignUpForm] = useState(false);
-  const [users, setUsers] = useState<Customer[]>([]); // Estado para almacenar los usuarios obtenidos
+  const [users, setUsers] = useState<User[]>([]); // Estado para almacenar los usuarios obtenidos
   const router = useRouter();
   const page = 0;
   const rowsPerPage = 100;
