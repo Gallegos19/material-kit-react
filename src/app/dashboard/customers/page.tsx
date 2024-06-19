@@ -99,6 +99,6 @@ export default function Page(): React.JSX.Element {
   );
 }
 
-function applyPagination(rows: Customer[], page: number, rowsPerPage: number): Customer[] {
+function applyPagination(rows: User[], page: number, rowsPerPage: number): User[] {
   return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 }

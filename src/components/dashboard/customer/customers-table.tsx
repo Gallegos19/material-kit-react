@@ -15,6 +15,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
+import { User } from '@/services/api';
 
 import { useSelection } from '@/hooks/use-selection';
 
@@ -35,7 +36,7 @@ export interface Customer {
 interface CustomersTableProps {
   count?: number;
   page?: number;
-  rows?: Customer[];
+  rows?: User[];
   rowsPerPage?: number;
 }
 
