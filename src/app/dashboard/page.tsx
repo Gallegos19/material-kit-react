@@ -1,4 +1,3 @@
-// src/pages/index.tsx
 "use client"
 
 import * as React from 'react';
@@ -14,6 +13,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { PieChart, Pie, Cell, Tooltip, Legend, Label, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Brush } from 'recharts';
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF0000'];
 
 export default function Page(): React.JSX.Element {
   const [sensorData, setSensorData] = React.useState<any>(null);
@@ -99,6 +101,23 @@ export default function Page(): React.JSX.Element {
     );
   }
 
+  const temperatureData = [
+    { name: 'Temperatura', value: averageData.avgTemperature },
+    { name: 'Rest', value: 100 - averageData.avgTemperature },
+  ];
+
+  const humidityData = [
+    { name: 'Humedad', value: averageData.avgHumidity },
+    { name: 'Rest', value: 100 - averageData.avgHumidity },
+  ];
+
+  // Preparar datos para la gráfica de puntos
+  const scatterData = dataBetweenDates.map((data) => ({
+    date: new Date(data.dateRegistered).getTime(), // Convertir la fecha a timestamp
+    temperature: data.temperature1,
+    humidity: data.humidity1,
+  }));
+
   return (
     <Grid container spacing={3}>
       <Grid item lg={3} sm={6} xs={12}>
@@ -118,28 +137,58 @@ export default function Page(): React.JSX.Element {
       </Grid>
       <Box width="100%" height={5} />
       <Grid item lg={3} xs={12}>
-        <TableContainer component={Box} sx={{ maxHeight: 400 }}>
-          <Table stickyHeader aria-label="average-data-table">
-            <TableHead>
-              <TableRow>
-                <TableCell>No. Mes</TableCell>
-                <TableCell>Temperatura promedio</TableCell>
-                <TableCell>Humedad promedio</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow key={averageData.avgMes}>
-                <TableCell>{averageData.avgMes}</TableCell>
-                <TableCell>{averageData.avgTemperature.toFixed(2)} °C</TableCell>
-                <TableCell>{averageData.avgHumidity.toFixed(2)} %</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Typography variant="h6">Temperatura promedio</Typography>
+        <PieChart width={200} height={200}>
+          <Pie
+            data={temperatureData}
+            cx={100}
+            cy={100}
+            innerRadius={50}
+            outerRadius={80}
+            fill="#8884d8"
+            paddingAngle={5}
+            dataKey="value"
+          >
+            {temperatureData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+            <Label
+              value={`${averageData.avgTemperature.toFixed(2)} °C`}
+              position="center"
+              fill="#000"
+            />
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </Grid>
+      <Grid item lg={3} xs={12}>
+        <Typography variant="h6">Humedad promedio</Typography>
+        <PieChart width={200} height={200}>
+          <Pie
+            data={humidityData}
+            cx={100}
+            cy={100}
+            innerRadius={50}
+            outerRadius={80}
+            fill="#82ca9d"
+            paddingAngle={5}
+            dataKey="value"
+          >
+            {humidityData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+            <Label
+              value={`${averageData.avgHumidity.toFixed(2)} %`}
+              position="center"
+              fill="#000"
+            />
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
       </Grid>
       <Box width="100%" height={20} />
-
-
       <Grid item lg={12} md={6} xs={12}>
         <TableContainer component={Box} sx={{ maxHeight: 400 }}>
           <Table stickyHeader aria-label="data-between-dates-table">
@@ -177,6 +226,32 @@ export default function Page(): React.JSX.Element {
             </TableBody>
           </Table>
         </TableContainer>
+      </Grid>
+      <Grid item lg={12} md={6} xs={12}>
+        <Typography variant="h6">Gráfica de Puntos</Typography>
+        <ScatterChart
+          width={1200}
+          height={500}
+          margin={{ top: 20, right: 20, bottom: 10, left: 10 }}
+        >
+          <CartesianGrid />
+          <XAxis
+            type="number"
+            dataKey="date"
+            name="Fecha"
+            domain={['auto', 'auto']}
+            tickFormatter={(unixTime) => new Date(unixTime).toLocaleDateString()}
+          />
+          <YAxis
+            type="number"
+            dataKey="temperature"
+            name="Temperatura"
+            domain={['auto', 'auto']}
+          />
+          <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+          <Scatter name="Temperatura" data={scatterData} fill="#8884d8" />
+          <Brush dataKey="date" height={30} stroke="#8884d8" />
+        </ScatterChart>
       </Grid>
     </Grid>
   );
