@@ -44,9 +44,9 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
         <Stack spacing={3}>
           <Stack spacing={1}>
             <Typography color="inherit" sx={{ fontSize: '24px', lineHeight: '32px', textAlign: 'center' }} variant="h1">
-              Bienvenido a{' '}
+              Bienvenido a la{' '}
               <Box component="span" sx={{ color: '#15b79e' }}>
-                Devias Kit
+                Sala de Gammagrafia
               </Box>
             </Typography>
             <Typography align="center" variant="subtitle1">
